@@ -19,8 +19,10 @@ import { PassportModule } from '@nestjs/passport';
 			inject: [ConfigService],
 			useFactory: (config: ConfigService) => ({
 				secret: config.get<JwtModuleOptions['secret']>('JWT_ACCESS_SECRET_KEY')!,
-				signOptions: { expiresIn: config.get<JwtSignOptions['expiresIn']>('JWT_ACCESS_EXPIRES_IN') },
-			})
+				signOptions: {
+					expiresIn: config.get<JwtSignOptions['expiresIn']>('JWT_ACCESS_EXPIRES_IN'),
+				},
+			}),
 		}),
 	],
 	providers: [
@@ -28,7 +30,7 @@ import { PassportModule } from '@nestjs/passport';
 		JwtStrategy,
 		{
 			provide: 'ACCESS_JWT',
-			useExisting: JwtService
+			useExisting: JwtService,
 		},
 		{
 			provide: 'REFRESH_JWT',
@@ -36,10 +38,13 @@ import { PassportModule } from '@nestjs/passport';
 			useFactory: (config: ConfigService) =>
 				new JwtService({
 					secret: config.get<JwtModuleOptions['secret']>('JWT_REFRESH_SECRET_KEY')!,
-					signOptions: { expiresIn: config.get<JwtSignOptions['expiresIn']>('JWT_REFRESH_EXPIRES_IN') },
+					signOptions: {
+						expiresIn:
+							config.get<JwtSignOptions['expiresIn']>('JWT_REFRESH_EXPIRES_IN'),
+					},
 				}),
-		}
+		},
 	],
 	controllers: [AuthController],
 })
-export class AuthModule { }
+export class AuthModule {}

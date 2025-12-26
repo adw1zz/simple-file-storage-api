@@ -8,27 +8,27 @@ import { Token } from './token.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(
-        private configService: ConfigService,
-        @InjectRepository(Token) private tokensRepo: Repository<Token>,
-    ) {
-        super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ignoreExpiration: false,
-            secretOrKey: configService.get<string>('JWT_ACCESS_SECRET_KEY')!,
-        });
-    }
+	constructor(
+		private configService: ConfigService,
+		@InjectRepository(Token) private tokensRepo: Repository<Token>,
+	) {
+		super({
+			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+			ignoreExpiration: false,
+			secretOrKey: configService.get<string>('JWT_ACCESS_SECRET_KEY')!,
+		});
+	}
 
-    async validate(payload: any) {
-        const tokenEntity = await this.tokensRepo.findOne({
-            where: { user: { id: payload.id }, device_name: payload.device },
-            relations: ['user'],
-        });
+	async validate(payload: any) {
+		const tokenEntity = await this.tokensRepo.findOne({
+			where: { user: { id: payload.id }, device_name: payload.device },
+			relations: ['user'],
+		});
 
-        if (!tokenEntity) {
-            throw new UnauthorizedException();
-        }
+		if (!tokenEntity) {
+			throw new UnauthorizedException();
+		}
 
-        return { id: payload.id, email: payload.email, device: payload.device };
-    }
+		return { id: payload.id, email: payload.email, device: payload.device };
+	}
 }

@@ -52,4 +52,4 @@ import { FileMetadata } from './files/file-metadata.entity';
 	controllers: [],
 	providers: [],
 })
-export class AppModule { }
+export class AppModule {}
