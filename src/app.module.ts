@@ -7,6 +7,7 @@ import Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
 import { Token } from './auth/token.entity';
+import { FileMetadata } from './files/file-metadata.entity';
 
 @Module({
 	imports: [
@@ -39,7 +40,7 @@ import { Token } from './auth/token.entity';
 				username: config.get<string>('DB_USER'),
 				password: config.get<string>('DB_PASSWORD'),
 				database: config.get<string>('DB_NAME'),
-				entities: [User, Token],
+				entities: [User, Token, FileMetadata],
 				synchronize: true,
 			}),
 		}),
@@ -50,4 +51,4 @@ import { Token } from './auth/token.entity';
 	controllers: [],
 	providers: [],
 })
-export class AppModule {}
+export class AppModule { }
