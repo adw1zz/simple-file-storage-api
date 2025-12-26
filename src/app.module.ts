@@ -42,6 +42,7 @@ import { FileMetadata } from './files/file-metadata.entity';
 				database: config.get<string>('DB_NAME'),
 				entities: [User, Token, FileMetadata],
 				synchronize: true,
+				connectorPackage: 'mysql2',
 			}),
 		}),
 		AuthModule,
