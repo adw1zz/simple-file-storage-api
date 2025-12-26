@@ -23,3 +23,6 @@ Thumbs.db
 
 .git 
 .gitignore
+
+mysql_data
+mysql_data/

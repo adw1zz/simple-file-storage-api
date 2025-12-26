@@ -3,24 +3,24 @@ import { User } from '../users/user.entity';
 
 @Entity('files_metadata')
 export class FileMetadata {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
-    @Column()
-    filename: string;
+	@Column()
+	filename: string;
 
-    @Column()
-    extension: string;
+	@Column()
+	extension: string;
 
-    @Column()
-    mime_type: string;
+	@Column()
+	mime_type: string;
 
-    @Column({ type: 'bigint' })
-    size: number;
+	@Column({ type: 'bigint' })
+	size: number;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    uploaded_at: Date;
+	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+	uploaded_at: Date;
 
-    @ManyToOne(() => User, user => user.files, { onDelete: 'CASCADE' })
-    user: User;
+	@ManyToOne(() => User, (user) => user.files, { onDelete: 'CASCADE' })
+	user: User;
 }

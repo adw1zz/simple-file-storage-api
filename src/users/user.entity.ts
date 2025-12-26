@@ -4,18 +4,18 @@ import { FileMetadata } from '../files/file-metadata.entity';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
-  @Column({ unique: true })
-  email: string;
+	@Column({ unique: true })
+	email: string;
 
-  @Column()
-  password: string;
+	@Column()
+	password: string;
 
-  @OneToMany(() => Token, token => token.user)
-  tokens: Token[];
+	@OneToMany(() => Token, (token) => token.user)
+	tokens: Token[];
 
-  @OneToMany(() => FileMetadata, file => file.user)
-  files: FileMetadata[];
+	@OneToMany(() => FileMetadata, (file) => file.user)
+	files: FileMetadata[];
 }

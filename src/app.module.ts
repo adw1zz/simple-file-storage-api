@@ -26,14 +26,15 @@ import { Token } from './auth/token.entity';
 				DB_USER: Joi.string().required(),
 				DB_PASSWORD: Joi.string().required(),
 				DB_NAME: Joi.string().required(),
-				BCRYPT_ROUNDS: Joi.number().required().min(2)
+				BCRYPT_ROUNDS: Joi.number().required().min(2),
 			}),
 		}),
 		TypeOrmModule.forRootAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],
 			useFactory: (config: ConfigService) => ({
-				type: 'mysql', host: config.get<string>('DB_HOST'),
+				type: 'mysql',
+				host: config.get<string>('DB_HOST'),
 				port: config.get<number>('DB_PORT'),
 				username: config.get<string>('DB_USER'),
 				password: config.get<string>('DB_PASSWORD'),
@@ -44,9 +45,9 @@ import { Token } from './auth/token.entity';
 		}),
 		AuthModule,
 		UsersModule,
-		FilesModule
+		FilesModule,
 	],
 	controllers: [],
 	providers: [],
 })
-export class AppModule { }
+export class AppModule {}

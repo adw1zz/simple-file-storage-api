@@ -6,10 +6,8 @@ import { User } from '../users/user.entity';
 import { Token } from './token.entity';
 
 @Module({
-	imports: [
-		TypeOrmModule.forFeature([User, Token]),
-	],
+	imports: [TypeOrmModule.forFeature([User, Token])],
 	providers: [AuthService],
 	controllers: [AuthController],
 })
-export class AuthModule { }
+export class AuthModule {}
