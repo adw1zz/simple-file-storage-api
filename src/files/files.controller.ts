@@ -80,8 +80,9 @@ export class FilesController {
     async download(@Param('id') id: string, @Res() res: Response) {
         const stream = await this.filesService.getFile(id);
         const file = await this.filesService.getFileMetada(id);
+        const safeFilename = encodeURIComponent(file.filename);
         res.setHeader('Content-Type', file.mime_type);
-        res.setHeader('Content-Disposition', `attachment; filename="${file.filename}"`);
+        res.setHeader('Content-Disposition', `attachment; filename="${safeFilename}"`);
         stream.pipe(res);
     }
 

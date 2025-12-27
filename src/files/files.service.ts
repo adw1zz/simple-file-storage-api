@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FileMetadata } from './file-metadata.entity';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import * as fs from 'fs';
 
 @Injectable()
@@ -14,19 +14,29 @@ export class FilesService {
         private configService: ConfigService,
     ) { }
 
-    private getBasePath() {
-        return this.configService.get<string>('FILES_PATH')!;
+    private async getBasePath() {
+        const path = resolve(this.configService.get<string>('FILE_STORAGE_SOURCE')!);
+        await fs.promises.mkdir(path, { recursive: true })
+        return path
+    }
+
+    private decodeFilename(originalname: string) {
+        return new TextDecoder('utf-8').decode(Buffer.from(originalname, 'binary'))
     }
 
     async saveFile(file: Express.Multer.File, userId: string) {
-        const basePath = this.getBasePath();
-        const filePath = join(basePath, file.originalname);
+        if (!file || !file.originalname) {
+            throw new BadRequestException('Uploaded file is invalid or missing originalname');
+        }
+        const basePath = await this.getBasePath();
+        const filename = this.decodeFilename(file.originalname)
+        const filePath = join(basePath, filename);
 
         await fs.promises.writeFile(filePath, file.buffer);
 
         const metadata = this.filesRepo.create({
-            filename: file.originalname,
-            extension: file.originalname.split('.').pop(),
+            filename: filename,
+            extension: filename.split('.').pop(),
             mime_type: file.mimetype,
             size: file.size,
             path: filePath,
@@ -62,16 +72,20 @@ export class FilesService {
     }
 
     async updateFile(id: string, newFile: Express.Multer.File) {
+        if (!newFile || !newFile.originalname) {
+            throw new BadRequestException('Uploaded file is invalid or missing originalname');
+        }
         const file = await this.getFileMetada(id);
 
         await fs.promises.unlink(file.path);
 
-        const basePath = this.getBasePath();
-        const newPath = join(basePath, newFile.originalname);
+        const basePath = await this.getBasePath();
+        const filename = this.decodeFilename(newFile.originalname)
+        const newPath = join(basePath, filename);
         await fs.promises.writeFile(newPath, newFile.buffer);
 
-        file.filename = newFile.originalname;
-        file.extension = newFile.originalname.split('.').pop()!;
+        file.filename = filename;
+        file.extension = filename.split('.').pop()!;
         file.mime_type = newFile.mimetype;
         file.size = newFile.size;
         file.path = newPath;
