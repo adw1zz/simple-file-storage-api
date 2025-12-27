@@ -23,7 +23,7 @@ export class AuthService {
 		private configService: ConfigService,
 		@InjectRepository(User) private usersRepo: Repository<User>,
 		@InjectRepository(Token) private tokensRepo: Repository<Token>,
-	) { }
+	) {}
 
 	async generateTokens(user: User, device: string) {
 		const payload: TokenPayloadDto = {

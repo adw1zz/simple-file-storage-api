@@ -1,5 +1,5 @@
 export class TokenPayloadDto {
-    id: string;
-    email: string;
-    device: string;
+	id: string;
+	email: string;
+	device: string;
 }
