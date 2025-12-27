@@ -7,12 +7,8 @@ import { FileMetadata } from './file-metadata.entity';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [
-    AuthModule,
-    ConfigModule,
-    TypeOrmModule.forFeature([FileMetadata])
-  ],
-  providers: [FilesService],
-  controllers: [FilesController]
+	imports: [AuthModule, ConfigModule, TypeOrmModule.forFeature([FileMetadata])],
+	providers: [FilesService],
+	controllers: [FilesController],
 })
-export class FilesModule { }
+export class FilesModule {}
