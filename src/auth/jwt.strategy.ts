@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Token } from './token.entity';
+import { TokenPayloadDto } from './dtos';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -19,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 		});
 	}
 
-	async validate(payload: any) {
+	async validate(payload: TokenPayloadDto) {
 		const tokenEntity = await this.tokensRepo.findOne({
 			where: { user: { id: payload.id }, device_name: payload.device },
 			relations: ['user'],
@@ -29,6 +30,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 			throw new UnauthorizedException();
 		}
 
-		return { id: payload.id, email: payload.email, device: payload.device };
+		return payload;
 	}
 }

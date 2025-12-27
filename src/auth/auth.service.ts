@@ -13,6 +13,7 @@ import { Token } from './token.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { TokenPayloadDto } from './dtos';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +26,7 @@ export class AuthService {
 	) {}
 
 	async generateTokens(user: User, device: string) {
-		const payload = {
+		const payload: TokenPayloadDto = {
 			id: user.id,
 			email: user.email,
 			device,
