@@ -28,6 +28,7 @@ import { FileMetadata } from './files/file-metadata.entity';
 				DB_PASSWORD: Joi.string().required(),
 				DB_NAME: Joi.string().required(),
 				BCRYPT_ROUNDS: Joi.number().required().min(2),
+				FILE_STORAGE_SOURCE: Joi.string().required(),
 			}),
 		}),
 		TypeOrmModule.forRootAsync({
