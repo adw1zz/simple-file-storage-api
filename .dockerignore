@@ -14,7 +14,8 @@ tools/
 test
 test/
 
-*.env 
+*.env
+.env.docker
 Thumbs.db
 
 .vscode/ 
