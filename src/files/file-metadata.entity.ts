@@ -18,6 +18,9 @@ export class FileMetadata {
 	@Column({ type: 'bigint' })
 	size: number;
 
+	@Column()
+	path: string;
+
 	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
 	uploaded_at: Date;
 
