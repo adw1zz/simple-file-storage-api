@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import type { Request } from 'express';
 import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AuthCommandDto, TokensDto, RefreshTokensCommandDto } from './dtos';
+import { AuthCommandDto, TokensDto, RefreshTokensCommandDto, TokenPayloadDto } from './dtos';
 
 @Controller('')
 @ApiTags('Auth')
@@ -61,7 +61,7 @@ export class AuthController {
 	@UseGuards(JwtAuthGuard)
 	async logout(@Req() req: Request) {
 		await this.authService.logout(
-			(req.user as any)!.id,
+			(req.user as TokenPayloadDto).id,
 			req.headers['user-agent'] || 'unknown',
 		);
 		return;
