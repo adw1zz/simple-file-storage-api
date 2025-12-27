@@ -10,15 +10,24 @@ async function bootstrap() {
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
 		credentials: false,
 	});
-	app.setGlobalPrefix('api');
 	const config = new DocumentBuilder()
 		.setTitle('Simple file storage API')
 		.setVersion('1.0')
-		.addBearerAuth()
+		.addBearerAuth(
+			{
+				type: 'http',
+				scheme: 'bearer',
+				bearerFormat: 'JWT',
+				name: 'Authorization',
+				description: 'Enter JWT access-token',
+				in: 'header',
+			},
+			'access-token',
+		)
 		.addTag('simple-file-storage-api')
 		.build();
 	const documentFactory = () => SwaggerModule.createDocument(app, config);
-	SwaggerModule.setup('api/swagger', app, documentFactory, {
+	SwaggerModule.setup('swagger', app, documentFactory, {
 		jsonDocumentUrl: 'swagger/json',
 	});
 	app.useGlobalPipes(
