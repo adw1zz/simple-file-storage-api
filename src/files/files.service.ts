@@ -33,10 +33,10 @@ export class FilesService {
             user: { id: userId }
         })
 
-        return this.filesRepo.save(metadata)
+        await this.filesRepo.save(metadata)
     }
 
-    async getFilesList(page: number = 1, pageSize: number = 10) {
+    async getFilesList(page: number, pageSize: number) {
         return this.filesRepo.find({
             skip: (page - 1) * pageSize,
             take: pageSize,
@@ -75,6 +75,6 @@ export class FilesService {
         file.mime_type = newFile.mimetype;
         file.size = newFile.size;
         file.path = newPath;
-        return this.filesRepo.save(file);
+        await this.filesRepo.save(file);
     }
 }
